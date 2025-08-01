@@ -3,94 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vercel 部署测试</title>
-    <style>
-        body {
-            font-family: 'Microsoft YaHei', 'Arial', sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+    <title>随机趣味事实生成器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1', // 主色调：靛蓝色
+                        secondary: '#ec4899', // 辅助色：粉红色
+                        accent: '#8b5cf6', // 强调色：紫色
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        header {
-            background-color: #0070f3;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            border-radius: 5px;
-            margin-bottom: 2rem;
-        }
-        h1 {
-            margin: 0;
-        }
-        .content {
-            background-color: white;
-            border-radius: 5px;
-            padding: 2rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .feature {
-            margin-bottom: 1.5rem;
-        }
-        .feature h2 {
-            color: #0070f3;
-        }
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: #666;
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .fact-card {
+                @apply bg-white rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/50;
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-15px); }
+                100% { transform: translateY(0px); }
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Vercel 部署测试</h1>
-            <p>用于测试 Vercel 部署的简单页面</p>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen font-sans text-gray-800">
+    <!-- 页面容器 -->
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题区域 -->
+        <header class="text-center mb-12 mt-8">
+            <div class="relative inline-block">
+                <i class="fa fa-lightbulb-o text-5xl text-yellow-500 absolute -top-6 -left-6 animate-float opacity-70"></i>
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-primary text-shadow">
+                    趣味事实
+                </h1>
+                <i class="fa fa-rocket text-4xl text-accent absolute -bottom-4 -right-4 animate-float" style="animation-delay: 1s;"></i>
+            </div>
+            <p class="text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
+                每次点击，发现一个新奇有趣的事实！这些冷知识可能会让你大吃一惊哦。
+            </p>
         </header>
         
-        <div class="content">
-            <div class="feature">
-                <h2>欢迎来到我的测试网站！</h2>
-                <p>这是一个为测试 Vercel 免费部署服务而创建的简单 HTML 页面。</p>
+        <!-- 主要内容区域 -->
+        <main class="mb-16">
+            <!-- 事实卡片 -->
+            <div id="fact-card" class="fact-card mb-8 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
+                <div class="absolute bottom-0 left-0 w-24 h-24 bg-secondary/5 rounded-full -ml-12 -mb-12"></div>
+                
+                <div class="flex items-start mb-4">
+                    <div class="bg-primary/10 p-2 rounded-full mr-4">
+                        <i class="fa fa-info-circle text-primary text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800">你知道吗？</h2>
+                </div>
+                
+                <p id="fact-text" class="text-gray-700 text-lg leading-relaxed mb-6 relative z-10">
+                    蜂蜜永远不会变质。考古学家曾在古埃及金字塔中发现过3000年前的蜂蜜，仍然可以食用。
+                </p>
+                
+                <div class="flex justify-between items-center">
+                    <div class="text-sm text-gray-500 flex items-center">
+                        <i class="fa fa-refresh mr-1"></i>
+                        <span id="fact-number">事实 #1</span>
+                    </div>
+                    <button id="share-btn" class="text-primary hover:text-primary/80 transition-colors flex items-center text-sm">
+                        <i class="fa fa-share-alt mr-1"></i> 分享
+                    </button>
+                </div>
             </div>
             
-            <div class="feature">
-                <h2>关于 Vercel</h2>
-                <p>Vercel 是一个适用于静态站点和无服务器函数的云平台，完美契合您的工作流程。它使开发者能够托管可即时部署、自动扩展且无需监督的网站和网络服务。</p>
+            <!-- 按钮区域 -->
+            <div class="text-center">
+                <button id="new-fact-btn" class="btn-primary flex items-center justify-center mx-auto">
+                    <i class="fa fa-random mr-2"></i> 再来一个事实
+                </button>
+                
+                <div id="share-toast" class="hidden mt-4 bg-green-100 text-green-800 px-4 py-2 rounded-lg inline-block animate-fade-in">
+                    <i class="fa fa-check mr-1"></i> 已复制到剪贴板！
+                </div>
             </div>
-            
-            <div class="feature">
-                <h2>功能特点</h2>
-                <ul>
-                    <li>全球内容分发网络 (CDN)</li>
-                    <li>自动 HTTPS 加密</li>
-                    <li>持续部署</li>
-                    <li>预览部署</li>
-                    <li>自定义域名</li>
-                </ul>
-            </div>
-            
-            <div id="time" class="feature">
-                <h2>当前时间</h2>
-                <p>页面加载于: <span id="current-time">加载中...</span></p>
+        </main>
+        
+        <!-- 统计信息 -->
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-md mb-12">
+            <h3 class="text-lg font-semibold mb-4 text-center">探索统计</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-3 rounded-lg bg-primary/5">
+                    <div class="text-2xl font-bold text-primary" id="total-facts">42</div>
+                    <div class="text-sm text-gray-600">总事实数</div>
+                </div>
+                <div class="p-3 rounded-lg bg-secondary/5">
+                    <div class="text-2xl font-bold text-secondary" id="view-count">0</div>
+                    <div class="text-sm text-gray-600">浏览次数</div>
+                </div>
+                <div class="p-3 rounded-lg bg-accent/5">
+                    <div class="text-2xl font-bold text-accent" id="share-count">0</div>
+                    <div class="text-sm text-gray-600">分享次数</div>
+                </div>
+                <div class="p-3 rounded-lg bg-green-500/5">
+                    <div class="text-2xl font-bold text-green-500" id="fun-level">98%</div>
+                    <div class="text-sm text-gray-600">有趣程度</div>
+                </div>
             </div>
         </div>
         
-        <footer>
-            <p>© 2023 Vercel 测试站点 | 为部署测试而创建</p>
+        <!-- 页脚 -->
+        <footer class="text-center text-gray-500 text-sm pb-8">
+            <p>随机趣味事实生成器 &copy; 2023</p>
+            <p class="mt-1">每天学点新知识，生活更有趣</p>
         </footer>
     </div>
 
     <script>
-        // 显示当前时间
-        document.getElementById('current-time').textContent = new Date().toLocaleString('zh-CN');
+        // 趣味事实数据库
+        const funFacts = [
+            "蜂蜜永远不会变质。考古学家曾在古埃及金字塔中发现过3000年前的蜂蜜，仍然可以食用。",
+            "章鱼有三颗心脏和九个大脑。",
+            "一只成年蓝鲸的心脏大小相当于一辆小汽车，其动脉粗到可以让一个成年人在里面游泳。",
+            "在太空中，人无法哭泣，因为没有重力，眼泪无法流下。",
+            "香蕉是浆果，而草莓不是。",
+            "你每天大约会产生70000个想法。",
+            "猫可以发出超过100种不同的声音，而狗只能发出大约10种。",
+            "人类的鼻子可以分辨出超过1万亿种不同的气味。",
+            "向日葵的花盘会随着太阳转动，这种现象称为向光性。",
+            "一颗中子星的密度极高，一勺中子星物质的重量约等于珠穆朗玛峰的重量。",
+            "蜜蜂在一生中只能酿造大约十二分之一茶匙的蜂蜜。",
+            "企鹅可以跳高达6英尺（约1.8米）。",
+            "在金星上，一天的时间比一年还要长。",
+            "你的胃每两周就会产生一层新的粘液层，否则它会消化自己。",
+            "扑克牌中的每个花色代表不同的阶层：黑桃代表贵族，红桃代表教会，方块代表商人，梅花代表农民。",
+            "长颈鹿的舌头可以长达20英寸（约50厘米），可以用来清洁自己的耳朵。",
+            "人类与香蕉共享约50%的DNA。",
+            "如果把地球上所有的蚂蚁放在一起称重，其重量大约等于地球上所有人类的重量。",
+            "鳄鱼无法伸出它们的舌头。",
+            "当你打喷嚏时，你的心脏会暂停跳动约一毫秒。",
+            "冰岛没有蚊子。",
+            "章鱼在睡觉时会改变颜色。",
+            "世界上最小的鸟是蜂鸟，它的蛋只有豌豆那么大。",
+            "一个普通的云重达约500吨，相当于100头大象的重量。",
+            "人类的骨骼比钢筋混凝土更坚固，重量相同的情况下，骨骼的强度是混凝土的5倍。",
+            "在所有哺乳动物中，人类是唯一会自愿延迟睡眠的物种。",
+            "海豚睡觉时只有一半的大脑在休息，另一半保持清醒以呼吸和警惕危险。",
+            "巧克力可以杀死狗，因为它含有可可碱，对狗的心脏和神经系统有害。",
+            "世界上所有的雪晶都有6个角，但没有两个雪晶是完全相同的。",
+            "骆驼可以在没有水的情况下存活长达两周，没有食物的情况下存活长达一个月。",
+            "一只蝴蝶的味觉器官在它的脚上。",
+            "月球正在以每年约3.8厘米的速度远离地球。",
+            "一个喷嚏的速度可以达到每小时160公里。",
+            "大象是唯一不能跳跃的哺乳动物。",
+            "地球上大约有75%的火山位于太平洋沿岸，形成了所谓的“环太平洋火山带”。",
+            "人的眼睛可以分辨大约1000万种不同的颜色。",
+            "海星没有大脑，但它们有神经系统。",
+            "竹子是世界上生长最快的植物，有些品种每天可以生长超过91厘米。",
+            "在1969年阿波罗11号登月任务中，宇航员尼尔·阿姆斯特朗在月球上留下的脚印可能会保留长达1000万年，因为月球上没有风。",
+            "鳄鱼的寿命可以长达100年以上。",
+            "一只成年牡蛎可以过滤大约50加仑（约189升）的水每天。",
+            "人类的大脑在出生时就含有大约1000亿个神经元，这个数量在人的一生中基本保持不变。"
+        ];
+        
+        // DOM元素
+        const factText = document.getElementById('fact-text');
+        const factNumber = document.getElementById('fact-number');
+        const newFactBtn = document.getElementById('new-fact-btn');
+        const shareBtn = document.getElementById('share-btn');
+        const shareToast = document.getElementById('share-toast');
+        const viewCount = document.getElementById('view-count');
+        const shareCount = document.getElementById('share-count');
+        
+        // 初始化计数
+        let views = localStorage.getItem('factViews') ? parseInt(localStorage.getItem('factViews')) : 0;
+        let shares = localStorage.getItem('factShares') ? parseInt(localStorage.getItem('factShares')) : 0;
+        viewCount.textContent = views;
+        shareCount.textContent = shares;
+        
+        // 增加浏览次数
+        views++;
+        localStorage.setItem('factViews', views);
+        viewCount.textContent = views;
+        
+        // 生成新事实
+        function generateNewFact() {
+            // 添加动画效果
+            const factCard = document.getElementById('fact-card');
+            factCard.classList.add('opacity-0', 'scale-95');
+            
+            setTimeout(() => {
+                // 随机选择一个事实
+                const randomIndex = Math.floor(Math.random() * funFacts.length);
+                const randomFact = funFacts[randomIndex];
+                
+                // 更新显示
+                factText.textContent = randomFact;
+                factNumber.textContent = `事实 #${randomIndex + 1}`;
+                
+                // 移除动画类，触发过渡效果
+                factCard.classList.remove('opacity-0', 'scale-95');
+                
+                // 滚动到顶部（移动设备）
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 300);
+        }
+        
+        // 分享功能
+        function shareFact() {
+            const currentFact = factText.textContent;
+            const shareText = `你知道吗？${currentFact} #趣味事实`;
+            
+            // 复制到剪贴板
+            navigator.clipboard.writeText(shareText).then(() => {
+                // 显示提示
+                shareToast.classList.remove('hidden');
+                shareToast.classList.add('animate-bounce');
+                
+                // 增加分享计数
+                shares++;
+                localStorage.setItem('factShares', shares);
+                shareCount.textContent = shares;
+                
+                // 3秒后隐藏提示
+                setTimeout(() => {
+                    shareToast.classList.add('hidden');
+                    shareToast.classList.remove('animate-bounce');
+                }, 3000);
+            });
+        }
+        
+        // 事件监听
+        newFactBtn.addEventListener('click', generateNewFact);
+        shareBtn.addEventListener('click', shareFact);
+        
+        // 为按钮添加点击波纹效果
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const x = e.clientX - e.target.getBoundingClientRect().left;
+                const y = e.clientY - e.target.getBoundingClientRect().top;
+                
+                const ripple = document.createElement('span');
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // 添加波纹样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .ripple {
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple {
+                to {
+                    transform: scale(2.5);
+                    opacity: 0;
+                }
+            }
+            
+            button {
+                position: relative;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
