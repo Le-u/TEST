@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vercel 部署测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        header {
+            background-color: #0070f3;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            margin: 0;
+        }
+        .content {
+            background-color: white;
+            border-radius: 5px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .feature {
+            margin-bottom: 1.5rem;
+        }
+        .feature h2 {
+            color: #0070f3;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vercel 部署测试</h1>
+            <p>用于测试 Vercel 部署的简单页面</p>
+        </header>
+        
+        <div class="content">
+            <div class="feature">
+                <h2>欢迎来到我的测试网站！</h2>
+                <p>这是一个为测试 Vercel 免费部署服务而创建的简单 HTML 页面。</p>
+            </div>
+            
+            <div class="feature">
+                <h2>关于 Vercel</h2>
+                <p>Vercel 是一个适用于静态站点和无服务器函数的云平台，完美契合您的工作流程。它使开发者能够托管可即时部署、自动扩展且无需监督的网站和网络服务。</p>
+            </div>
+            
+            <div class="feature">
+                <h2>功能特点</h2>
+                <ul>
+                    <li>全球内容分发网络 (CDN)</li>
+                    <li>自动 HTTPS 加密</li>
+                    <li>持续部署</li>
+                    <li>预览部署</li>
+                    <li>自定义域名</li>
+                </ul>
+            </div>
+            
+            <div id="time" class="feature">
+                <h2>当前时间</h2>
+                <p>页面加载于: <span id="current-time">加载中...</span></p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 Vercel 测试站点 | 为部署测试而创建</p>
+        </footer>
+    </div>
+
+    <script>
+        // 显示当前时间
+        document.getElementById('current-time').textContent = new Date().toLocaleString('zh-CN');
+    </script>
+</body>
+</html>
