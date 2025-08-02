@@ -1,312 +1,774 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="随机趣味事实生成器，每天学点新知识，生活更有趣">
-    <meta name="keywords" content="趣味事实, 随机生成, 冷知识, 生活小常识">
-    <meta name="author" content="Your Name">
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <meta name="google" content="notranslate">
-    <meta name="google-site-verification" content="your-verification-code">
-    <title>随机趣味事实生成器</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <!-- 配置Tailwind自定义颜色和字体 -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#6366f1', // 主色调：靛蓝色
-                        secondary: '#ec4899', // 辅助色：粉红色
-                        accent: '#8b5cf6', // 强调色：紫色
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-    
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .fact-card {
-                @apply bg-white rounded-2xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl;
-            }
-            .btn-primary {
-                @apply bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary/50;
-            }
-            .animate-float {
-                animation: float 6s ease-in-out infinite;
-            }
-            @keyframes float {
-                0% { transform: translateY(0px); }
-                50% { transform: translateY(-15px); }
-                100% { transform: translateY(0px); }
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的个人主页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- 配置Tailwind自定义主题 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#7C3AED', // 主色调：紫色
+            secondary: '#EC4899', // 辅助色：粉色
+            accent: '#06B6D4', // 强调色：青色
+            dark: '#1F2937',
+            light: '#F9FAFB'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-8px);
+      }
+      .gradient-bg {
+        background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+      }
+      .parallax {
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen font-sans text-gray-800">
-    <!-- 页面容器 -->
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <!-- 标题区域 -->
-        <header class="text-center mb-12 mt-8">
-            <div class="relative inline-block">
-                <i class="fa fa-lightbulb-o text-5xl text-yellow-500 absolute -top-6 -left-6 animate-float opacity-70"></i>
-                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-primary text-shadow">
-                    趣味事实
-                </h1>
-                <i class="fa fa-rocket text-4xl text-accent absolute -bottom-4 -right-4 animate-float" style="animation-delay: 1s;"></i>
-            </div>
-            <p class="text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
-                每次点击，发现一个新奇有趣的事实！这些冷知识可能会让你大吃一惊哦。
-            </p>
-        </header>
+
+<body class="bg-light text-dark font-sans overflow-x-hidden">
+  <!-- 导航栏 -->
+  <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4">
+    <div class="container mx-auto px-4 md:px-8">
+      <div class="flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold text-white text-shadow">
+          <span class="fa fa-star mr-2"></span>我的主页
+        </a>
         
-        <!-- 主要内容区域 -->
-        <main class="mb-16">
-            <!-- 事实卡片 -->
-            <div id="fact-card" class="fact-card mb-8 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16"></div>
-                <div class="absolute bottom-0 left-0 w-24 h-24 bg-secondary/5 rounded-full -ml-12 -mb-12"></div>
-                
-                <div class="flex items-start mb-4">
-                    <div class="bg-primary/10 p-2 rounded-full mr-4">
-                        <i class="fa fa-info-circle text-primary text-xl"></i>
-                    </div>
-                    <h2 class="text-xl font-semibold text-gray-800">你知道吗？</h2>
-                </div>
-                
-                <p id="fact-text" class="text-gray-700 text-lg leading-relaxed mb-6 relative z-10">
-                    蜂蜜永远不会变质。考古学家曾在古埃及金字塔中发现过3000年前的蜂蜜，仍然可以食用。
-                </p>
-                
-                <div class="flex justify-between items-center">
-                    <div class="text-sm text-gray-500 flex items-center">
-                        <i class="fa fa-refresh mr-1"></i>
-                        <span id="fact-number">事实 #1</span>
-                    </div>
-                    <button id="share-btn" class="text-primary hover:text-primary/80 transition-colors flex items-center text-sm">
-                        <i class="fa fa-share-alt mr-1"></i> 分享
-                    </button>
-                </div>
-            </div>
-            
-            <!-- 按钮区域 -->
-            <div class="text-center">
-                <button id="new-fact-btn" class="btn-primary flex items-center justify-center mx-auto">
-                    <i class="fa fa-random mr-2"></i> 再来一个事实
-                </button>
-                
-                <div id="share-toast" class="hidden mt-4 bg-green-100 text-green-800 px-4 py-2 rounded-lg inline-block animate-fade-in">
-                    <i class="fa fa-check mr-1"></i> 已复制到剪贴板！
-                </div>
-            </div>
-        </main>
-        
-        <!-- 统计信息 -->
-        <div class="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-md mb-12">
-            <h3 class="text-lg font-semibold mb-4 text-center">探索统计</h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                <div class="p-3 rounded-lg bg-primary/5">
-                    <div class="text-2xl font-bold text-primary" id="total-facts">42</div>
-                    <div class="text-sm text-gray-600">总事实数</div>
-                </div>
-                <div class="p-3 rounded-lg bg-secondary/5">
-                    <div class="text-2xl font-bold text-secondary" id="view-count">0</div>
-                    <div class="text-sm text-gray-600">浏览次数</div>
-                </div>
-                <div class="p-3 rounded-lg bg-accent/5">
-                    <div class="text-2xl font-bold text-accent" id="share-count">0</div>
-                    <div class="text-sm text-gray-600">分享次数</div>
-                </div>
-                <div class="p-3 rounded-lg bg-green-500/5">
-                    <div class="text-2xl font-bold text-green-500" id="fun-level">98%</div>
-                    <div class="text-sm text-gray-600">有趣程度</div>
-                </div>
-            </div>
+        <!-- 桌面导航 -->
+        <div class="hidden md:flex space-x-8">
+          <a href="#life" class="text-white hover:text-accent transition-colors">生活</a>
+          <a href="#record" class="text-white hover:text-accent transition-colors">记录</a>
+          <a href="#blog" class="text-white hover:text-accent transition-colors">博客</a>
+          <a href="#couple" class="text-white hover:text-accent transition-colors">情侣</a>
+          <a href="#travel" class="text-white hover:text-accent transition-colors">旅游</a>
         </div>
         
-        <!-- 页脚 -->
-        <footer class="text-center text-gray-500 text-sm pb-8">
-            <p>随机趣味事实生成器 &copy; 2023</p>
-            <p class="mt-1">每天学点新知识，生活更有趣</p>
-        </footer>
+        <!-- 移动端菜单按钮 -->
+        <button id="menu-toggle" class="md:hidden text-white text-2xl">
+          <i class="fa fa-bars"></i>
+        </button>
+      </div>
     </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full mt-4">
+      <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+        <a href="#life" class="text-dark hover:text-primary py-2 transition-colors">生活</a>
+        <a href="#record" class="text-dark hover:text-primary py-2 transition-colors">记录</a>
+        <a href="#blog" class="text-dark hover:text-primary py-2 transition-colors">博客</a>
+        <a href="#couple" class="text-dark hover:text-primary py-2 transition-colors">情侣</a>
+        <a href="#travel" class="text-dark hover:text-primary py-2 transition-colors">旅游</a>
+      </div>
+    </div>
+  </nav>
 
-    <script>
-        // 趣味事实数据库
-        const funFacts = [
-            "蜂蜜永远不会变质。考古学家曾在古埃及金字塔中发现过3000年前的蜂蜜，仍然可以食用。",
-            "章鱼有三颗心脏和九个大脑。",
-            "一只成年蓝鲸的心脏大小相当于一辆小汽车，其动脉粗到可以让一个成年人在里面游泳。",
-            "在太空中，人无法哭泣，因为没有重力，眼泪无法流下。",
-            "香蕉是浆果，而草莓不是。",
-            "你每天大约会产生70000个想法。",
-            "猫可以发出超过100种不同的声音，而狗只能发出大约10种。",
-            "人类的鼻子可以分辨出超过1万亿种不同的气味。",
-            "向日葵的花盘会随着太阳转动，这种现象称为向光性。",
-            "一颗中子星的密度极高，一勺中子星物质的重量约等于珠穆朗玛峰的重量。",
-            "蜜蜂在一生中只能酿造大约十二分之一茶匙的蜂蜜。",
-            "企鹅可以跳高达6英尺（约1.8米）。",
-            "在金星上，一天的时间比一年还要长。",
-            "你的胃每两周就会产生一层新的粘液层，否则它会消化自己。",
-            "扑克牌中的每个花色代表不同的阶层：黑桃代表贵族，红桃代表教会，方块代表商人，梅花代表农民。",
-            "长颈鹿的舌头可以长达20英寸（约50厘米），可以用来清洁自己的耳朵。",
-            "人类与香蕉共享约50%的DNA。",
-            "如果把地球上所有的蚂蚁放在一起称重，其重量大约等于地球上所有人类的重量。",
-            "鳄鱼无法伸出它们的舌头。",
-            "当你打喷嚏时，你的心脏会暂停跳动约一毫秒。",
-            "冰岛没有蚊子。",
-            "章鱼在睡觉时会改变颜色。",
-            "世界上最小的鸟是蜂鸟，它的蛋只有豌豆那么大。",
-            "一个普通的云重达约500吨，相当于100头大象的重量。",
-            "人类的骨骼比钢筋混凝土更坚固，重量相同的情况下，骨骼的强度是混凝土的5倍。",
-            "在所有哺乳动物中，人类是唯一会自愿延迟睡眠的物种。",
-            "海豚睡觉时只有一半的大脑在休息，另一半保持清醒以呼吸和警惕危险。",
-            "巧克力可以杀死狗，因为它含有可可碱，对狗的心脏和神经系统有害。",
-            "世界上所有的雪晶都有6个角，但没有两个雪晶是完全相同的。",
-            "骆驼可以在没有水的情况下存活长达两周，没有食物的情况下存活长达一个月。",
-            "一只蝴蝶的味觉器官在它的脚上。",
-            "月球正在以每年约3.8厘米的速度远离地球。",
-            "一个喷嚏的速度可以达到每小时160公里。",
-            "大象是唯一不能跳跃的哺乳动物。",
-            "地球上大约有75%的火山位于太平洋沿岸，形成了所谓的“环太平洋火山带”。",
-            "人的眼睛可以分辨大约1000万种不同的颜色。",
-            "海星没有大脑，但它们有神经系统。",
-            "竹子是世界上生长最快的植物，有些品种每天可以生长超过91厘米。",
-            "在1969年阿波罗11号登月任务中，宇航员尼尔·阿姆斯特朗在月球上留下的脚印可能会保留长达1000万年，因为月球上没有风。",
-            "鳄鱼的寿命可以长达100年以上。",
-            "一只成年牡蛎可以过滤大约50加仑（约189升）的水每天。",
-            "人类的大脑在出生时就含有大约1000亿个神经元，这个数量在人的一生中基本保持不变。"
-        ];
+  <!-- 英雄区域 -->
+  <header class="relative h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img src="https://picsum.photos/id/1015/1920/1080" alt="自然风光背景" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10 text-center">
+      <h1 class="text-[clamp(2.5rem,8vw,5rem)] font-bold text-white mb-6 leading-tight text-shadow animate-[fadeIn_1s_ease-in-out]">
+        记录生活的每一个瞬间
+      </h1>
+      <p class="text-[clamp(1rem,3vw,1.5rem)] text-white/90 max-w-3xl mx-auto mb-10 animate-[fadeIn_1.5s_ease-in-out]">
+        分享我的生活、思考与旅行，留住每一个值得纪念的时刻
+      </p>
+      <a href="#life" class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 animate-[fadeIn_2s_ease-in-out]">
+        开始探索 <i class="fa fa-arrow-down ml-2"></i>
+      </a>
+    </div>
+    
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+      <i class="fa fa-angle-double-down text-3xl"></i>
+    </div>
+  </header>
+
+  <!-- 生活板块 -->
+  <section id="life" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mb-4">
+          <span class="fa fa-heart text-secondary mr-3"></span>生活
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">记录日常点滴，感受生活中的小确幸</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-6 rounded-full"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- 生活卡片1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="h-56 overflow-hidden">
+            <img src="https://picsum.photos/id/102/600/400" alt="咖啡时光" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-sm text-gray-500"><i class="fa fa-calendar-o mr-1"></i> 2023年5月12日</span>
+              <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">日常</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3">清晨的咖啡时光</h3>
+            <p class="text-gray-600 mb-4">每天早上的一杯手冲咖啡，是开启美好一天的仪式感。阳光透过窗户洒在杯沿，香气弥漫整个房间...</p>
+            <a href="#" class="inline-flex items-center text-primary font-medium hover:text-secondary transition-colors">
+              阅读更多 <i class="fa fa-long-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
         
-        // DOM元素
-        const factText = document.getElementById('fact-text');
-        const factNumber = document.getElementById('fact-number');
-        const newFactBtn = document.getElementById('new-fact-btn');
-        const shareBtn = document.getElementById('share-btn');
-        const shareToast = document.getElementById('share-toast');
-        const viewCount = document.getElementById('view-count');
-        const shareCount = document.getElementById('share-count');
+        <!-- 生活卡片2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="h-56 overflow-hidden">
+            <img src="https://picsum.photos/id/292/600/400" alt="城市漫步" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-sm text-gray-500"><i class="fa fa-calendar-o mr-1"></i> 2023年6月3日</span>
+              <span class="bg-secondary/10 text-secondary text-xs px-3 py-1 rounded-full">漫步</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3">城市中的宁静角落</h3>
+            <p class="text-gray-600 mb-4">偶然发现的小巷，藏着一家复古书店和几家特色小店。在繁忙的都市中，找到这样的宁静角落实属难得...</p>
+            <a href="#" class="inline-flex items-center text-primary font-medium hover:text-secondary transition-colors">
+              阅读更多 <i class="fa fa-long-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
         
-        // 初始化计数
-        let views = localStorage.getItem('factViews') ? parseInt(localStorage.getItem('factViews')) : 0;
-        let shares = localStorage.getItem('factShares') ? parseInt(localStorage.getItem('factShares')) : 0;
-        viewCount.textContent = views;
-        shareCount.textContent = shares;
-        
-        // 增加浏览次数
-        views++;
-        localStorage.setItem('factViews', views);
-        viewCount.textContent = views;
-        
-        // 生成新事实
-        function generateNewFact() {
-            // 添加动画效果
-            const factCard = document.getElementById('fact-card');
-            factCard.classList.add('opacity-0', 'scale-95');
+        <!-- 生活卡片3 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+          <div class="h-56 overflow-hidden">
+            <img src="https://picsum.photos/id/431/600/400" alt="烹饪时光" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-sm text-gray-500"><i class="fa fa-calendar-o mr-1"></i> 2023年7月18日</span>
+              <span class="bg-accent/10 text-accent text-xs px-3 py-1 rounded-full">美食</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3">周末的烹饪实验</h3>
+            <p class="text-gray-600 mb-4">尝试了新的意面食谱，加入了自制的番茄酱和香草。烹饪的过程也是一种放松，看着成品很有成就感...</p>
+            <a href="#" class="inline-flex items-center text-primary font-medium hover:text-secondary transition-colors">
+              阅读更多 <i class="fa fa-long-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="#" class="inline-block border-2 border-primary text-primary font-semibold px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+          查看更多生活记录
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 记录板块 -->
+  <section id="record" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mb-4">
+          <span class="fa fa-book text-primary mr-3"></span>记录
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">时间的印记，岁月的痕迹</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-6 rounded-full"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div class="order-2 lg:order-1">
+          <div class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-md transform transition-all duration-300 hover:shadow-lg">
+              <div class="flex items-start">
+                <div class="bg-primary/10 text-primary p-3 rounded-lg mr-4">
+                  <i class="fa fa-line-chart text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold mb-2">年度目标进度</h3>
+                  <p class="text-gray-600 mb-4">今年设定的10个目标，已经完成了6个，继续加油！</p>
+                  <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="bg-primary h-2.5 rounded-full" style="width: 60%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-            setTimeout(() => {
-                // 随机选择一个事实
-                const randomIndex = Math.floor(Math.random() * funFacts.length);
-                const randomFact = funFacts[randomIndex];
-                
-                // 更新显示
-                factText.textContent = randomFact;
-                factNumber.textContent = `事实 #${randomIndex + 1}`;
-                
-                // 移除动画类，触发过渡效果
-                factCard.classList.remove('opacity-0', 'scale-95');
-                
-                // 滚动到顶部（移动设备）
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 300);
+            <div class="bg-white p-6 rounded-xl shadow-md transform transition-all duration-300 hover:shadow-lg">
+              <div class="flex items-start">
+                <div class="bg-secondary/10 text-secondary p-3 rounded-lg mr-4">
+                  <i class="fa fa-book text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold mb-2">阅读记录</h3>
+                  <p class="text-gray-600">本月读完了《人类简史》，正在读《原子习惯》，已读35%</p>
+                  <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">历史</span>
+                    <span class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">心理学</span>
+                    <span class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">自我提升</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-xl shadow-md transform transition-all duration-300 hover:shadow-lg">
+              <div class="flex items-start">
+                <div class="bg-accent/10 text-accent p-3 rounded-lg mr-4">
+                  <i class="fa fa-bicycle text-xl"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold mb-2">运动打卡</h3>
+                  <p class="text-gray-600">本周运动5次，累计跑步32公里，瑜伽3次，状态良好</p>
+                  <div class="flex items-center mt-3 text-sm text-gray-500">
+                    <span class="flex items-center mr-4"><i class="fa fa-calendar-check-o mr-1"></i> 5/7天</span>
+                    <span class="flex items-center"><i class="fa fa-fire mr-1"></i> 850卡路里</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="order-1 lg:order-2 relative">
+          <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl transform rotate-2 transition-transform duration-500 hover:rotate-0">
+            <img src="https://picsum.photos/id/1068/800/1000" alt="时间记录" class="w-full h-auto">
+          </div>
+          <div class="absolute top-10 -right-10 w-64 h-64 bg-primary/20 rounded-full filter blur-3xl -z-10"></div>
+          <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-secondary/20 rounded-full filter blur-3xl -z-10"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 博客板块 -->
+  <section id="blog" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mb-4">
+          <span class="fa fa-pencil text-primary mr-3"></span>博客
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">思考的痕迹，观点的表达</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-6 rounded-full"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- 主要博客文章 -->
+        <div class="col-span-1 md:col-span-2 lg:col-span-1">
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden h-full card-hover">
+            <div class="h-80 overflow-hidden">
+              <img src="https://picsum.photos/id/1073/800/600" alt="旅行摄影技巧" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            </div>
+            <div class="p-8">
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">摄影</span>
+                <span class="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">旅行</span>
+              </div>
+              <h3 class="text-2xl font-bold mb-4">如何用手机拍出专业级旅行照片</h3>
+              <p class="text-gray-600 mb-6">不必拥有昂贵的相机设备，掌握这些技巧，你的手机也能拍出令人惊艳的旅行照片。从构图到光线，从后期到角度选择，全方位解析手机摄影的秘诀...</p>
+              <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                  <img src="https://picsum.photos/id/64/100/100" alt="作者头像" class="w-10 h-10 rounded-full object-cover">
+                  <div class="ml-3">
+                    <p class="font-medium">林小默</p>
+                    <p class="text-sm text-gray-500">2023年8月5日 · 8分钟阅读</p>
+                  </div>
+                </div>
+                <a href="#" class="text-primary font-medium hover:text-secondary transition-colors">阅读全文</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 博客列表 -->
+        <div class="space-y-6">
+          <!-- 博客文章1 -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
+            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+              <img src="https://picsum.photos/id/3/400/300" alt="极简主义生活" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            </div>
+            <div class="md:w-2/3 p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-2">
+                <span><i class="fa fa-calendar-o mr-1"></i> 2023年7月22日</span>
+                <span class="mx-3">•</span>
+                <span><i class="fa fa-clock-o mr-1"></i> 5分钟</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2">极简主义：给生活做减法的艺术</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">尝试极简主义生活已经半年了，分享一下我的心得体会和实用方法，如何在不降低生活质量的前提下...</p>
+              <a href="#" class="text-primary text-sm font-medium hover:text-secondary transition-colors">阅读更多</a>
+            </div>
+          </div>
+          
+          <!-- 博客文章2 -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
+            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+              <img src="https://picsum.photos/id/20/400/300" alt="远程工作体验" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            </div>
+            <div class="md:w-2/3 p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-2">
+                <span><i class="fa fa-calendar-o mr-1"></i> 2023年6月15日</span>
+                <span class="mx-3">•</span>
+                <span><i class="fa fa-clock-o mr-1"></i> 7分钟</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2">远程工作一年后：效率与平衡的艺术</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">从办公室到居家办公，这一年的远程工作经历教会了我如何管理时间、保持专注并维持工作与生活的平衡...</p>
+              <a href="#" class="text-primary text-sm font-medium hover:text-secondary transition-colors">阅读更多</a>
+            </div>
+          </div>
+          
+          <!-- 博客文章3 -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
+            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+              <img src="https://picsum.photos/id/96/400/300" alt="城市探索" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            </div>
+            <div class="md:w-2/3 p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-2">
+                <span><i class="fa fa-calendar-o mr-1"></i> 2023年5月30日</span>
+                <span class="mx-3">•</span>
+                <span><i class="fa fa-clock-o mr-1"></i> 6分钟</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2">城市微旅行：发现身边的陌生风景</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">不必远行，在熟悉的城市中也能找到新鲜感。我尝试了"游客视角"重新探索自己居住的城市，收获良多...</p>
+              <a href="#" class="text-primary text-sm font-medium hover:text-secondary transition-colors">阅读更多</a>
+            </div>
+          </div>
+          
+          <!-- 博客文章4 -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
+            <div class="md:w-1/3 h-48 md:h-auto overflow-hidden">
+              <img src="https://picsum.photos/id/160/400/300" alt="阅读习惯" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+            </div>
+            <div class="md:w-2/3 p-6">
+              <div class="flex items-center text-sm text-gray-500 mb-2">
+                <span><i class="fa fa-calendar-o mr-1"></i> 2023年4月18日</span>
+                <span class="mx-3">•</span>
+                <span><i class="fa fa-clock-o mr-1"></i> 4分钟</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2">如何培养每天阅读的习惯</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">从一个不爱读书的人到每月读完5本书，我用了这几个简单有效的方法。培养阅读习惯并不难，关键是...</p>
+              <a href="#" class="text-primary text-sm font-medium hover:text-secondary transition-colors">阅读更多</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="#" class="inline-block border-2 border-primary text-primary font-semibold px-8 py-3 rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+          浏览所有博客文章
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 情侣板块 -->
+  <section id="couple" class="py-20 bg-gradient-to-b from-purple-50 to-pink-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mb-4">
+          <span class="fa fa-heart text-secondary mr-3"></span>情侣
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">与你共度的每一个珍贵时刻</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-6 rounded-full"></div>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="md:col-span-2">
+          <div class="grid grid-cols-2 gap-6 h-full">
+            <div class="space-y-6 h-full">
+              <img src="https://picsum.photos/id/1062/600/800" alt="情侣合照1" class="w-full h-64 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105">
+              <img src="https://picsum.photos/id/325/600/400" alt="情侣合照2" class="w-full h-40 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105">
+            </div>
+            <div class="space-y-6 h-full">
+              <img src="https://picsum.photos/id/338/600/400" alt="情侣合照3" class="w-full h-40 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105">
+              <img src="https://picsum.photos/id/1074/600/800" alt="情侣合照4" class="w-full h-64 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105">
+            </div>
+          </div>
+        </div>
+        <div>
+          <img src="https://picsum.photos/id/1083/600/1200" alt="情侣合照5" class="w-full h-full object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105">
+        </div>
+      </div>
+      
+      <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8 md:p-10 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-secondary/10 rounded-full"></div>
+        <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-primary/10 rounded-full"></div>
+        
+        <div class="text-center mb-8 relative z-10">
+          <h3 class="text-2xl font-bold mb-2">我们的故事</h3>
+          <p class="text-gray-500">从相遇的那一天起，已经走过了 <span class="text-primary font-bold">1256</span> 天</p>
+        </div>
+        
+        <div class="space-y-6 relative z-10">
+          <div class="flex items-start">
+            <div class="bg-primary/10 text-primary p-2 rounded-full mr-4 mt-1">
+              <i class="fa fa-map-marker"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-lg mb-1">第一次约会</h4>
+              <p class="text-gray-600">在一家有落地窗的咖啡馆，聊了整整一下午，从兴趣爱好到人生理想，仿佛认识了很久。</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-secondary/10 text-secondary p-2 rounded-full mr-4 mt-1">
+              <i class="fa fa-calendar"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-lg mb-1">确认关系</h4>
+              <p class="text-gray-600">在一个星光璀璨的夜晚，沿着河边散步时，他终于说出了那句话，我毫不犹豫地答应了。</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-accent/10 text-accent p-2 rounded-full mr-4 mt-1">
+              <i class="fa fa-home"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-lg mb-1">同居生活</h4>
+              <p class="text-gray-600">一起布置我们的小窝，每天一起做饭、看电影、分享一天的趣事，平凡的日子也变得闪闪发光。</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-10 relative z-10">
+          <a href="#" class="inline-block bg-gradient-to-r from-primary to-secondary text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+            查看更多我们的故事
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 旅游板块 -->
+  <section id="travel" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.8rem,5vw,3rem)] font-bold mb-4">
+          <span class="fa fa-plane text-primary mr-3"></span>旅游
+        </h2>
+        <p class="text-gray-600 max-w-2xl mx-auto text-lg">探索世界的脚步，永不停歇</p>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-6 rounded-full"></div>
+      </div>
+      
+      <!-- 旅游目的地标签 -->
+      <div class="flex flex-wrap justify-center gap-3 mb-12">
+        <button class="bg-primary text-white px-5 py-2 rounded-full text-sm font-medium">全部</button>
+        <button class="bg-gray-100 hover:bg-gray-200 px-5 py-2 rounded-full text-sm font-medium transition-colors">国内</button>
+        <button class="bg-gray-100 hover:bg-gray-200 px-5 py-2 rounded-full text-sm font-medium transition-colors">国外</button>
+        <button class="bg-gray-100 hover:bg-gray-200 px-5 py-2 rounded-full text-sm font-medium transition-colors">海边</button>
+        <button class="bg-gray-100 hover:bg-gray-200 px-5 py-2 rounded-full text-sm font-medium transition-colors">山地</button>
+        <button class="bg-gray-100 hover:bg-gray-200 px-5 py-2 rounded-full text-sm font-medium transition-colors">城市</button>
+        <button class="bg-gray-100 hover:bg-gray-200 px-5 py-2 rounded-full text-sm font-medium transition-colors">古镇</button>
+      </div>
+      
+      <!-- 旅游照片墙 -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/10/600/600" alt="海边风景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">三亚</h3>
+              <p class="text-sm text-white/80">2023年2月</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/15/600/600" alt="山景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">黄山</h3>
+              <p class="text-sm text-white/80">2022年10月</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/28/600/600" alt="城市风景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">上海</h3>
+              <p class="text-sm text-white/80">2023年5月</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/42/600/600" alt="古镇风景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">乌镇</h3>
+              <p class="text-sm text-white/80">2022年6月</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/40/600/600" alt="国外风景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">东京</h3>
+              <p class="text-sm text-white/80">2023年1月</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/65/600/600" alt="自然风景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">张家界</h3>
+              <p class="text-sm text-white/80">2022年8月</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/76/600/600" alt="海边风景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">青岛</h3>
+              <p class="text-sm text-white/80">2023年7月</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="aspect-square overflow-hidden rounded-xl relative group">
+          <img src="https://picsum.photos/id/87/600/600" alt="国外风景" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+            <div class="p-4 text-white">
+              <h3 class="font-bold">巴黎</h3>
+              <p class="text-sm text-white/80">2022年4月</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 旅游故事 -->
+      <div class="mt-16 bg-gray-50 rounded-2xl p-8 md:p-10">
+        <h3 class="text-2xl font-bold mb-8 text-center">我的旅行故事</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-4">
+                <i class="fa fa-map-o text-xl"></i>
+              </div>
+              <h4 class="text-xl font-bold">徒步黄山三日</h4>
+            </div>
+            <p class="text-gray-600 mb-4">三天两夜的黄山徒步之旅，虽然累但收获满满。看到了壮观的云海和日出，认识了许多志同道合的朋友...</p>
+            <a href="#" class="text-primary font-medium hover:text-secondary transition-colors inline-flex items-center">
+              查看完整游记 <i class="fa fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+          
+          <div class="bg-white rounded-xl shadow-md p-6 card-hover">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-4">
+                <i class="fa fa-ship text-xl"></i>
+              </div>
+              <h4 class="text-xl font-bold">三亚海岛探险</h4>
+            </div>
+            <p class="text-gray-600 mb-4">在三亚租了一艘小船，探索了几个无人小岛。清澈的海水，洁白的沙滩，还有意外发现的珊瑚礁...</p>
+            <a href="#" class="text-primary font-medium hover:text-secondary transition-colors inline-flex items-center">
+              查看完整游记 <i class="fa fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 订阅区域 -->
+  <section class="py-16 gradient-bg text-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-4">不错过任何更新</h2>
+        <p class="text-white/80 mb-8">订阅我的动态，第一时间获取生活、旅行和思考的最新分享</p>
+        
+        <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+          <input type="email" placeholder="输入你的邮箱地址" class="flex-1 px-5 py-3 rounded-full text-dark focus:outline-none focus:ring-2 focus:ring-white">
+          <button type="submit" class="bg-white text-primary font-semibold px-6 py-3 rounded-full hover:bg-gray-100 transition-colors">
+            订阅 <i class="fa fa-paper-plane ml-2"></i>
+          </button>
+        </form>
+        
+        <p class="text-white/60 text-sm mt-4">我们尊重你的隐私，不会向第三方分享你的信息</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">我的主页</h3>
+          <p class="text-gray-400 mb-4">记录生活的点滴，分享旅行的见闻，留住美好的回忆</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa fa-weibo text-xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa fa-wechat text-xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa fa-instagram text-xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fa fa-github text-xl"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">快速链接</h3>
+          <ul class="space-y-2">
+            <li><a href="#life" class="text-gray-400 hover:text-white transition-colors">生活</a></li>
+            <li><a href="#record" class="text-gray-400 hover:text-white transition-colors">记录</a></li>
+            <li><a href="#blog" class="text-gray-400 hover:text-white transition-colors">博客</a></li>
+            <li><a href="#couple" class="text-gray-400 hover:text-white transition-colors">情侣</a></li>
+            <li><a href="#travel" class="text-gray-400 hover:text-white transition-colors">旅游</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">热门文章</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">如何用手机拍出专业级旅行照片</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">极简主义：给生活做减法的艺术</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">徒步黄山三日全攻略</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">我们的爱情故事</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-bold mb-4">联系我</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center text-gray-400"><i class="fa fa-envelope-o mr-2"></i> hello@example.com</li>
+            <li class="flex items-center text-gray-400"><i class="fa fa-map-marker mr-2"></i> 上海市静安区</li>
+            <li class="flex items-center text-gray-400"><i class="fa fa-coffee mr-2"></i> 喜欢结交新朋友</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2023 我的个人主页. 保留所有权利.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 返回顶部按钮 -->
+  <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-secondary">
+    <i class="fa fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    const backToTop = document.getElementById('back-to-top');
+    
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 100) {
+        navbar.classList.add('bg-dark/95', 'shadow-lg', 'py-2');
+        navbar.classList.remove('py-4');
+        
+        backToTop.classList.remove('opacity-0', 'invisible');
+        backToTop.classList.add('opacity-100', 'visible');
+      } else {
+        navbar.classList.remove('bg-dark/95', 'shadow-lg', 'py-2');
+        navbar.classList.add('py-4');
+        
+        backToTop.classList.add('opacity-0', 'invisible');
+        backToTop.classList.remove('opacity-100', 'visible');
+      }
+    });
+    
+    // 移动端菜单切换
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    menuToggle.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuToggle.querySelector('i');
+      if (icon.classList.contains('fa-bars')) {
+        icon.classList.replace('fa-bars', 'fa-times');
+      } else {
+        icon.classList.replace('fa-times', 'fa-bars');
+      }
+    });
+    
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        // 关闭移动端菜单
+        if (!mobileMenu.classList.contains('hidden')) {
+          mobileMenu.classList.add('hidden');
+          const icon = menuToggle.querySelector('i');
+          icon.classList.replace('fa-times', 'fa-bars');
         }
         
-        // 分享功能
-        function shareFact() {
-            const currentFact = factText.textContent;
-            const shareText = `你知道吗？${currentFact} #趣味事实`;
-            
-            // 复制到剪贴板
-            navigator.clipboard.writeText(shareText).then(() => {
-                // 显示提示
-                shareToast.classList.remove('hidden');
-                shareToast.classList.add('animate-bounce');
-                
-                // 增加分享计数
-                shares++;
-                localStorage.setItem('factShares', shares);
-                shareCount.textContent = shares;
-                
-                // 3秒后隐藏提示
-                setTimeout(() => {
-                    shareToast.classList.add('hidden');
-                    shareToast.classList.remove('animate-bounce');
-                }, 3000);
-            });
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
         }
-        
-        // 事件监听
-        newFactBtn.addEventListener('click', generateNewFact);
-        shareBtn.addEventListener('click', shareFact);
-        
-        // 为按钮添加点击波纹效果
-        const buttons = document.querySelectorAll('button');
-        buttons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                const x = e.clientX - e.target.getBoundingClientRect().left;
-                const y = e.clientY - e.target.getBoundingClientRect().top;
-                
-                const ripple = document.createElement('span');
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.classList.add('ripple');
-                
-                this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            });
+      });
+    });
+    
+    // 返回顶部按钮
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // 图片懒加载
+    document.addEventListener("DOMContentLoaded", function() {
+      const lazyImages = document.querySelectorAll("img");
+      
+      if ("IntersectionObserver" in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const image = entry.target;
+              image.classList.add('opacity-100');
+              image.classList.remove('opacity-0');
+              imageObserver.unobserve(image);
+            }
+          });
         });
         
-        // 添加波纹样式
-        const style = document.createElement('style');
-        style.textContent = `
-            .ripple {
-                position: absolute;
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.3);
-                transform: scale(0);
-                animation: ripple 0.6s linear;
-                pointer-events: none;
-            }
-            
-            @keyframes ripple {
-                to {
-                    transform: scale(2.5);
-                    opacity: 0;
-                }
-            }
-            
-            button {
-                position: relative;
-                overflow: hidden;
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
+        lazyImages.forEach(image => {
+          image.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+          imageObserver.observe(image);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
